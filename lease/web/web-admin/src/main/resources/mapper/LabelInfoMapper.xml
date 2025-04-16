@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pk.lease.web.admin.mapper.LabelInfoMapper">
+
+    <select id="selectListByApartmentId" resultType="com.pk.lease.model.entity.LabelInfo">
+        select ll.id, ll.name, ll.type
+        from label_info ll
+           , apartment_label al
+        where al.apartment_id = #{apartmentId}
+          and al.label_id = ll.id
+          and al.is_deleted = 0
+          and ll.is_deleted = 0
+    </select>
+    <select id="selectListByRoomId" resultType="com.pk.lease.model.entity.LabelInfo">
+        select id,
+               type,
+               name
+        from label_info
+        where is_deleted = 0
+          and id in
+              (select label_id
+               from room_label
+               where is_deleted = 0
+                 and room_id = #{id})
+    </select>
+</mapper>
