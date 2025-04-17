@@ -11,12 +11,14 @@ import com.pk.lease.web.admin.vo.system.user.SystemUserInfoVo;
 import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "后台管理系统登录管理")
 @RestController
 @RequestMapping("/admin")
+@Slf4j
 public class LoginController {
 
     @Autowired
@@ -33,7 +35,9 @@ public class LoginController {
     @Operation(summary = "登录")
     @PostMapping("login")
     public Result<String> login(@RequestBody LoginVo loginVo) {
+        log.info("发起登录请求");
         String jwt=loginService.login(loginVo);
+        log.info("获取对应jwt："+jwt);
         return Result.ok(jwt);
     }
 

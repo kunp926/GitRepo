@@ -27,7 +27,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(this.authenticationInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/admin/login/**");
+        registry.addInterceptor(this.authenticationInterceptor).addPathPatterns("/admin/**")// 精确排除登录接口和验证码接口
+        .excludePathPatterns(
+                "/admin/login",          // POST 登录接口
+                "/admin/login/captcha"   // GET 验证码接口
+        );;
     }
 
 }
