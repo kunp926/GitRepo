@@ -11,6 +11,7 @@ import com.pk.lease.web.admin.mapper.SystemUserMapper;
 import com.pk.lease.web.admin.service.LoginService;
 import com.pk.lease.web.admin.vo.login.CaptchaVo;
 import com.pk.lease.web.admin.vo.login.LoginVo;
+import com.pk.lease.web.admin.vo.system.user.SystemUserInfoVo;
 import com.wf.captcha.SpecCaptcha;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,14 @@ public class LoginServiceImpl implements LoginService {
         claim.put("username",systemUser.getUsername());
         claim.put("userId",systemUser.getId());
         return JwtUtil.createToken(systemUser.getId(),systemUser.getUsername());
+    }
+
+    @Override
+    public SystemUserInfoVo getLoginUserInfo(Long userId) {
+        SystemUser systemUser = systemUserMapper.selectById(userId);
+        SystemUserInfoVo systemUserInfoVo = new SystemUserInfoVo();
+        systemUserInfoVo.setName(systemUser.getName());
+        systemUserInfoVo.setAvatarUrl(systemUser.getAvatarUrl());
+        return systemUserInfoVo;
     }
 }

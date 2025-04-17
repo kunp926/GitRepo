@@ -21,8 +21,7 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
-    @Autowired
-    private SystemUserService systemUserService;
+
 
     @Operation(summary = "获取图形验证码")
     @GetMapping("login/captcha")
@@ -40,11 +39,8 @@ public class LoginController {
 
     @Operation(summary = "获取登陆用户个人信息")
     @GetMapping("info")
-    public Result<SystemUserInfoVo> info(@RequestHeader("access_token")String token) {
-        Claims claims= JwtUtil.parseToken(token);
-        Long userId = claims.get("userId", Long.class);
-        String username = claims.get("username", String.class);
-        SystemUserInfoVo systemUserInfoVo=systemUserService.getLoginUserInfoById(userId);
+    public Result<SystemUserInfoVo> info() {
+        SystemUserInfoVo systemUserInfoVo  =loginService.getLoginUserInfo(LoginUserHolder.getLoginUser().getUserId());
         return Result.ok(systemUserInfoVo);
     }
 }
